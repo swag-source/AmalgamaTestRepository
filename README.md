@@ -1,5 +1,4 @@
 # AmalgamaTestRepository
-***
 
 ## Ejércitos
 Los ejércitos poseen una cantidad inicial de piqueros, arqueros y caballeros
