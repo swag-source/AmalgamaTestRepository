@@ -61,10 +61,12 @@ Las consecuencias de la batalla son las siguientes:
 * **Ejército ganador**: Obtiene 100 unidades de oro.
 * **En caso de empate**: Ambos jugadores pierden alguna unidad (queda a criterio del programador)
 
-## Class Diagram
+## UML Class Diagram
 
 ```mermaid
+%%{init: {'theme': 'light', 'themeVariables': { 'lineColor': '#000000' }}}%%
 classDiagram
+    direction LR
     Army <|-- Chinese
     Army <|-- Byzantine
     Army <|-- English
