@@ -60,3 +60,85 @@ Las consecuencias de la batalla son las siguientes:
 * **Ejército perdedor**: Pierde las dos unidades con mayor puntaje.
 * **Ejército ganador**: Obtiene 100 unidades de oro.
 * **En caso de empate**: Ambos jugadores pierden alguna unidad (queda a criterio del programador)
+
+## Class Diagram
+
+```mermaid
+classDiagram
+    Army <|-- Chinese
+    Army <|-- Byzantine
+    Army <|-- English
+    Army "1" *-- "*" Unit
+    Army o-- result_t
+    Unit <|-- Pikemen
+    Unit <|-- Cavalry
+    Unit <|-- Archer
+
+    class Army {
+        -string armyID
+        -vector~Unit~ units
+        -vector~pair~string,result_t~~ history
+        -int coins
+        +Army(string id, int pikemen, int archery, int cavalry)
+        +attack(Army& target) void
+        +trainUnit(Unit& unit) bool
+        +transformUnit(Unit& unit) bool
+        +getArmyStrength() int
+        +getCoins() int
+        +getStrongestUnit() Unit
+        +getUnits() vector~Unit~
+        +getName() string
+        +getHistory() vector~pair~string,result_t~~
+        -canAffordPayment(int cost) bool
+        -addUnit(Unit& unit) void
+        -getTotalArmyStrength() int
+        -handleBattleWinner(Army& winner, Army& loser) void
+        -removeStrongestUnits(Army& army, int count) void
+        -recordBattleResult(Army& enemy, result_t result) void
+        -addCoins(int amount) void
+        -removeCoins(int amount) void
+    }
+
+    class Unit {
+        -int trainingCost
+        -int transformCost
+        -int trainingStrength
+        -int strength
+        +Unit(int strength, int trainingCost, int transformCost, int trainingStrength)
+        +getStrength() int
+        +getTransformCost() int
+        +getTrainingCost() int
+        +trainUnit() void
+        +transformUnit() void
+    }
+
+    class Pikemen {
+        +Pikemen()
+    }
+
+    class Cavalry {
+        +Cavalry()
+    }
+
+    class Archer {
+        +Archer()
+    }
+
+    class Chinese {
+        +Chinese(string Name)
+    }
+
+    class Byzantine {
+        +Byzantine(string Name)
+    }
+
+    class English {
+        +English(string Name)
+    }
+
+    class result_t {
+        <<enumeration>>
+        Winner
+        Loser
+        Draw
+    }
