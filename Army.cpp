@@ -2,7 +2,8 @@
 #include <numeric>
 
 // Constructor
-Army::Army(int pikemen, int archery, int cavalry) {
+Army::Army(const std::string& name, int pikemen, int archery, int cavalry){  // Initialize name using member initializer list
+    this->armyID = name;
     for (int i = 0; i < pikemen; ++i) {
         addUnit(Pikemen());
     }
@@ -40,13 +41,11 @@ void Army::handleBattleWinner(Army& winner, Army& loser) {
 
 void Army::removeStrongestUnits(Army& army, int count) {
     for(int i = 0; i < count && !army.units.empty(); ++i) {
-        // Find the strongest unit (cryptic notation for c++)
         auto strongestIt = std::max_element(army.units.begin(), army.units.end(),
                                             [](const Unit& a, const Unit& b) {
                                                 return a.getStrength() < b.getStrength();
                                             });
 
-        // Remove just that one unit
         if (strongestIt != army.units.end()) {
             army.units.erase(strongestIt);
         }
@@ -54,26 +53,23 @@ void Army::removeStrongestUnits(Army& army, int count) {
 }
 
 void Army::recordBattleResult(Army& enemy, result_t result) {
-    this->history.emplace_back(enemy, result);
-    enemy.history.emplace_back(*this,result == Winner ? Loser : result == Loser ? Winner : Draw);
+    this->history.emplace_back(enemy.getName(), result);
+    enemy.history.emplace_back(this->getName(),
+                               result == Winner ? Loser : result == Loser ? Winner : Draw);
 }
 
 // Methods
 void Army::attack(Army &t) {
     int battleResult = this->getTotalArmyStrength() - t.getTotalArmyStrength();
 
-    // battleResult > 0 => current army wins.
     if(battleResult > 0) {
         handleBattleWinner(*this, t);
         recordBattleResult(t, Winner);
     }
-    // battleResult < 0 => attacked army wins
     else if(battleResult < 0) {
         handleBattleWinner(t, *this);
         recordBattleResult(t, Loser);
     }
-    // battleResult = 0 => draw.
-    // We remove the strongest unit from both armies.
     else {
         removeStrongestUnits(*this, 1);
         removeStrongestUnits(t, 1);
@@ -114,12 +110,14 @@ int Army::getArmyStrength() const {
 }
 
 Unit Army::getStrongestUnit() const {
-    // Defensive approach
     if (units.empty()) {
-        return {0, 0, 0,0};  // Return default unit if army is empty
+        return {0, 0, 0, 0};
     }
 
-    return *std::max_element(units.begin(), units.end(), [](const Unit& a, const Unit& b) {return a.getStrength() < b.getStrength();});
+    return *std::max_element(units.begin(), units.end(),
+                             [](const Unit& a, const Unit& b) {
+                                 return a.getStrength() < b.getStrength();
+                             });
 }
 
 int Army::getCoins() const {
@@ -128,6 +126,14 @@ int Army::getCoins() const {
 
 const std::vector<Unit> &Army::getUnits() const {
     return units;
+}
+
+std::string Army::getName() const {
+    return armyID;
+}
+
+const std::vector<std::pair<std::string, result_t>> &Army::getHistory() const {
+    return history;
 }
 
 

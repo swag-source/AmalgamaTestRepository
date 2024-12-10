@@ -27,10 +27,10 @@ void Unit::trainUnit(){
 void Unit::transformUnit() {
     // Case Pikemen
     if(this->transformCost == 30){
-        *this = Cavalry();
+        *this = Archer();
     } else if (this->transformCost == 40) {
         // Case Archer
-        *this = Pikemen();
+        *this = Cavalry();
     }
     // We don't have a case for Cavalry
 }
