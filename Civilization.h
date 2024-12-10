@@ -12,7 +12,7 @@ public:
 
 class Byzantine : public Army {
 public:
-    explicit Byzantine(const std::string& Name) : Army(Name, 10, 10, 10) {}
+    explicit Byzantine(const std::string& Name) : Army(Name, 5, 8, 15) {}
 };
 
 class English : public Army {
